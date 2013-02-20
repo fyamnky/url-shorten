@@ -1,6 +1,6 @@
+#http://stackoverflow.com/a/1052896/2026118
 import random
 
-#http://stackoverflow.com/a/1052896/2026118
 mapping = range(30)
 mapping.reverse()
 
