@@ -3,8 +3,10 @@ import random
 
 mapping = range(30)
 mapping.reverse()
+random.shuffle(mapping)
 
-chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789'
+
 
 def encode(n):
     result = 0
@@ -15,6 +17,7 @@ def encode(n):
             result |= b2
     return result
 
+
 def decode(n):
     result = 0
     for i, b in enumerate(mapping):
@@ -24,22 +27,26 @@ def decode(n):
             result |= b1
     return result
 
+
 def enbase(x):
-    n = len(chars)
+    n = len(ALPHABET)
     if x < n:
-        return chars[x]
-    return enbase(x/n) + chars[x%n]
+        return ALPHABET[x]
+    return enbase(x / n) + ALPHABET[x % n]
+
 
 def debase(x):
-    n = len(chars)
+    n = len(ALPHABET)
     result = 0
     for i, c in enumerate(reversed(x)):
-        result += chars.index(c) * (n**i)
+        result += ALPHABET.index(c) * (n ** i)
     return result
+
 
 def get_id_from_short_url(short_url):
     id_number = decode(debase(short_url))
     return id_number
+
 
 def get_short_url_from_id(id_number):
     short_url = enbase(encode(id_number))
