@@ -1,3 +1,4 @@
+import logging
 import os
 import json
 import sqlite3
@@ -21,13 +22,17 @@ from flask import (
 import shorten_utils
 
 DATABASE = os.environ.get('SHORTEN_DB_LOCATION', 'shorten.db')
-SITE_URL = 'http://127.0.0.1:8000'
+SITE_URL = 'http://127.0.0.1:5000'
 DEBUG = False
-USERNAME = ''
-PASSWORD = ''
+USERNAME = 'foo'
+PASSWORD = 'bar'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+app.secret_key = 'foobarbaz'
+
+log = logging.getLogger(__name__)
+app.logger.addHandler(log)
 
 
 def connect_db():
@@ -74,7 +79,6 @@ def logout():
 
 
 def check_auth(username, password):
-    # ridiculously unsafe
     return username == USERNAME and password == PASSWORD
 
 
@@ -196,7 +200,7 @@ def show_entries():
 
 @app.route('/')
 def index():
-    return redirect(SITE_URL, code=302)
+    return redirect('/login', code=302)
 
 if __name__ == '__main__':
     app.run(debug=False)
